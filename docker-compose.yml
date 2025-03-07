@@ -1,0 +1,77 @@
+services:
+  frontend:
+    container_name: frontend
+    image: frontend:latest
+    build: 
+      context: ./messender-next
+      args:
+        NEXT_PUBLIC_API_ENDPOINT: ${NEXT_PUBLIC_API_ENDPOINT}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - socket
+    restart: always
+  backend:
+    container_name: backend
+    image: backend:latest
+    build:
+      context: ./messender-spring
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      AWS_S3_REGION: ${AWS_S3_REGION}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  socket:
+    image: socket:latest
+    build: ./messender-socket
+    container_name: socket
+    ports:
+      - "4444:4444"
+    environment:
+      SOCKET_PORT: ${SOCKET_PORT}
+      NODE_ENV: production
+    restart: always
+
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGDATA: /data/postgres
+    volumes:
+      - pg_data:/data/postgres
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    restart: always
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: always
+
+volumes:
+  pg_data:
+  rabbitmq_data:
