@@ -1,9 +1,9 @@
 [submodule "messender-next"]
 	path = messender-next
-	url = https://github.com/VuongNhatHien/Messender-NextJS.git
-[submodule "messender-spring"]
-	path = messender-spring
-	url = https://github.com/VuongNhatHien/Messender-Spring.git
+	url = git@github.com:VuongNhatHien/Messender-NextJS.git
 [submodule "messender-socket"]
 	path = messender-socket
-	url = https://github.com/VuongNhatHien/Messender-Socket.git
+	url = git@github.com:VuongNhatHien/Messender-Socket.git
+[submodule "messender-spring"]
+	path = messender-spring
+	url = git@github.com:VuongNhatHien/Messender-Spring.git
