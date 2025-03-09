@@ -2,10 +2,14 @@ services:
   frontend:
     container_name: frontend
     image: frontend:latest
-    build: 
+    build:
       context: ./messender-next
       args:
-        NEXT_PUBLIC_API_ENDPOINT: ${NEXT_PUBLIC_API_ENDPOINT}
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL}
+        NEXT_PUBLIC_FRONTEND_SERVER_URL: ${NEXT_PUBLIC_FRONTEND_SERVER_URL}
+        NEXT_PUBLIC_WEB_SOCKET_URL: ${NEXT_PUBLIC_WEB_SOCKET_URL}
+    environment:
+      LOCAL_BACKEND_URL: ${LOCAL_BACKEND_URL}
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     depends_on:
