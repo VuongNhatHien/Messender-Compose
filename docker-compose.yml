@@ -40,7 +40,6 @@ services:
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
       SPRING_RABBITMQ_HOST: rabbitmq
     depends_on:
-      - postgres
       - rabbitmq
 
   socket:
@@ -53,20 +52,6 @@ services:
       SOCKET_PORT: ${SOCKET_PORT}
       NODE_ENV: production
     restart: always
-
-  postgres:
-    container_name: postgres
-    image: postgres:17
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      PGDATA: /data/postgres
-    volumes:
-      - pg_data:/data/postgres
-    ports:
-      - ${DB_PORT}:${DB_PORT}
-    restart: always
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -78,5 +63,4 @@ services:
     restart: always
 
 volumes:
-  pg_data:
   rabbitmq_data:
